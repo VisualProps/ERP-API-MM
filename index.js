@@ -15,7 +15,7 @@ var mysqlConnection = mysql.createConnection({
     host: '127.0.0.1',  
     user : 'monty',  
     password : 'Welcome2024@',   
-    database : 'erp',  
+    database : 'erp_general',  
     multipleStatements : true  
 }); 
 // To check whether the connection is succeed for Failed while running the project in console.  
@@ -484,7 +484,7 @@ app.get('/getstockitems/:id',(req,res)=>{
 });  
 
 app.get('/consumedstock/:id',(req,res)=>{  
-    mysqlConnection.query(`select s.id as stock_id,i.id,s.batch_id,CONCAT(s.registered_quantity, " ", u.name) as registered_quantity,(CONCAT (s.registered_quantity-quantity," ",u.name)) as consumed_quantity,CONCAT(i.item_name,"-",b.name) as item_name,i.item_name as item_for_grid, s.quantity,i.unit_price, u.name as unit_of_measure,b.name as batch_name,DATE_FORMAT(b.exp_date,'%d/%m/%Y') as exp_date, DATE_FORMAT(b.mfd_date,'%d/%m/%Y') as mfd_date from stock s JOIN item_master i on s.item_id=i.id JOIN batch b on b.id=s.batch_id JOIN unit_of_measure u on i.unit_id=u.id where s.client_id=2 AND s.is_deleted =0  order by  s.last_modified_date desc`,[req.params.id],(err,rows,fields)=>{  
+    mysqlConnection.query(`select s.id as stock_id,i.id,s.batch_id,CONCAT(s.registered_quantity, " ", u.name) as registered_quantity,(CONCAT (s.registered_quantity-quantity," ",u.name)) as consumed_quantity,CONCAT(i.item_name,"-",b.name) as item_name,i.item_name as item_for_grid, s.quantity,i.unit_price, u.name as unit_of_measure,b.name as batch_name,DATE_FORMAT(b.exp_date,'%d/%m/%Y') as exp_date, DATE_FORMAT(b.mfd_date,'%d/%m/%Y') as mfd_date from stock s JOIN item_master i on s.item_id=i.id JOIN batch b on b.id=s.batch_id JOIN unit_of_measure u on i.unit_id=u.id where s.client_id=? AND s.is_deleted =0  order by  s.last_modified_date desc`,[req.params.id],(err,rows,fields)=>{  
     if(!err)   
     {
     console.log(rows);
