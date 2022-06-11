@@ -469,7 +469,7 @@ app.get('/stock',(req,res)=>{
 
 
 app.get('/getstockitems/:id',(req,res)=>{  
-    mysqlConnection.query(`select s.id as stock_id,i.id,s.batch_id,CONCAT(i.item_name,"-",b.name) as item_name,i.item_name as item_for_grid, s.quantity,i.unit_price, u.name as unit_of_measure,b.name as batch_name,DATE_FORMAT(b.exp_date,'%d/%m/%Y') as exp_date, DATE_FORMAT(b.mfd_date,'%d/%m/%Y') as mfd_date from stock s JOIN item_master i on s.item_id=i.id JOIN batch b on b.id=s.batch_id JOIN unit_of_measure u on i.unit_id=u.id where s.client_id=? &&  b.exp_date > now() && s.is_deleted =0 && s.quantity>0 order by b.exp_date`,[req.params.id],(err,rows,fields)=>{  
+    mysqlConnection.query(`select s.id as stock_id,i.id,s.batch_id,i.item_name as item_name,i.item_name as item_for_grid, s.quantity,i.unit_price, u.name as unit_of_measure from stock s JOIN item_master i on s.item_id=i.id JOIN unit_of_measure u on i.unit_id=u.id where s.client_id=?  && s.is_deleted =0 && s.quantity>0 order by i.item_name`,[req.params.id],(err,rows,fields)=>{  
     if(!err)   
     {
     console.log(rows);
